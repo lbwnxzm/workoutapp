@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="BENFIT — your personal training logbook.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>BENFIT — Training Logbook</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">B.</span><div><strong>BENFIT.</strong><small>PERSONAL TRAINING SYSTEM</small></div></div>
+      <button class="icon-btn" id="exportBtn" aria-label="Export backup" title="Export backup">⚙</button>
+    </header>
+    <div class="program-head">
+      <div class="eyebrow">8-WEEK BUILD <span id="weekLabel">WEEK 1 / 8</span></div>
+      <div class="week-selector" id="weekSelector"></div>
+      <div class="program-track"><div id="weekProgress" class="progress-fill"></div></div>
+    </div>
+    <main>
+      <section id="home" class="screen active">
+        <div class="eyebrow">8-WEEK STRENGTH BLOCK <span id="weekLabel">WEEK 1 / 8</span></div>
+        <div class="hero">
+          <div><h1>BUILD<br><span>YOURSELF.</span></h1><p>Consistency compounds.</p></div>
+          <div class="week-ring"><b id="weekNumber">01</b><small>OF 08</small></div>
+        </div>
+        <div class="section-head"><h2>WEEKLY OVERVIEW</h2><span id="completionText">0 / 4 sessions</span></div>
+        <div class="schedule" id="schedule"></div>
+        <div class="next-session">
+          <div><small>NEXT SESSION</small><strong>Push + Pull A</strong><span>Chest · Back · Shoulders</span></div>
+          <button class="primary" id="openWorkout">OPEN WORKOUT ↗</button>
+        </div>
+        <div class="section-head"><h2>REST TIMER</h2><span class="muted">BETWEEN SETS</span></div>
+        <div class="timer-card">
+          <div class="timer-display" id="timerDisplay">02:00</div>
+          <div class="timer-actions"><button class="pill selected" data-seconds="120">2 min</button><button class="pill" data-seconds="180">3 min</button><button class="pill ghost" id="timerStart">Start</button><button class="pill ghost" id="timerReset">Reset</button></div>
+          <div class="timer-note" id="timerNote">Ready when you are.</div>
+        </div>
+        <div class="section-head"><h2>BODY BASELINE</h2><span class="muted">18 NOV 2026</span></div>
+        <div class="metric-grid">
+          <div class="metric"><small>BODY WEIGHT</small><b>85.1 <i>kg</i></b></div>
+          <div class="metric"><small>BODY FAT</small><b>28.9 <i>%</i></b></div>
+          <div class="metric"><small>SKELETAL MUSCLE</small><b>34.4 <i>kg</i></b></div>
+          <div class="metric"><small>FAT MASS</small><b>24.6 <i>kg</i></b></div>
+        </div>
+        <p class="fineprint">Baseline values are editable in Progress. Prioritise consistent measurements over daily fluctuations.</p>
+      </section>
+
+      <section id="workout" class="screen">
+        <div class="eyebrow">TRAINING SESSION</div>
+        <h1>Log your <span>workout.</span></h1>
+        <div class="field-row">
+          <label>Training day<select id="daySelect"></select></label>
+          <label>Session date<input id="sessionDate" type="date"></label>
+        </div>
+        <div id="exerciseList"></div>
+        <button class="primary full" id="saveWorkout">Save session</button>
+        <p class="fineprint">Log only pain-free movements. Stop or modify an exercise if it reproduces your lower-back discomfort.</p>
+      </section>
+
+      <section id="history" class="screen">
+        <div class="eyebrow">YOUR TRAINING RECORD</div>
+        <h1>Session <span>history.</span></h1>
+        <div id="historyList" class="stack"></div>
+        <div class="empty" id="historyEmpty">No sessions logged yet. Your completed workouts will appear here.</div>
+      </section>
+
+      <section id="progress" class="screen">
+        <div class="eyebrow">MEASURE WHAT MATTERS</div>
+        <h1>Your <span>progress.</span></h1>
+        <div class="section-head"><h2>Body measurements</h2><button class="text-btn" id="addMeasurement">+ Add entry</button></div>
+        <div class="measurement-form" id="measurementForm">
+          <label>Date<input type="date" id="measureDate"></label>
+          <div class="measure-grid">
+            <label>Weight (kg)<input type="number" step=".1" id="mWeight" placeholder="85.1"></label>
+            <label>Body fat (%)<input type="number" step=".1" id="mFat" placeholder="28.9"></label>
+            <label>Skeletal muscle (kg)<input type="number" step=".1" id="mMuscle" placeholder="34.4"></label>
+            <label>Waist (cm)<input type="number" step=".1" id="mWaist" placeholder="—"></label>
+            <label>Chest (cm)<input type="number" step=".1" id="mChest" placeholder="—"></label>
+            <label>Shoulders (cm)<input type="number" step=".1" id="mShoulders" placeholder="—"></label>
+            <label>Arm (cm)<input type="number" step=".1" id="mArm" placeholder="—"></label>
+            <label>Thigh (cm)<input type="number" step=".1" id="mThigh" placeholder="—"></label>
+          </div>
+          <button class="primary full" id="saveMeasurement">Save measurements</button>
+        </div>
+        <div class="section-head"><h2>Weight trend</h2><span class="muted">kg</span></div>
+        <div class="chart-card"><canvas id="weightChart" height="190"></canvas><div id="chartEmpty" class="chart-empty">Add at least two weight entries to see your trend.</div></div>
+        <div class="section-head"><h2>Personal records</h2><span class="muted">Estimated 1RM</span></div>
+        <div id="prs" class="stack"></div>
+        <div class="section-head"><h2>Weekly report</h2><span class="muted">Current block</span></div>
+        <div class="report-grid">
+          <div class="metric"><small>SESSIONS</small><b id="reportSessions">0 / 4</b></div>
+          <div class="metric"><small>SETS LOGGED</small><b id="reportSets">0</b></div>
+          <div class="metric"><small>EXERCISE ENTRIES</small><b id="reportExercises">0</b></div>
+          <div class="metric"><small>TOTAL VOLUME</small><b id="reportVolume">0 <i>kg</i></b></div>
+        </div>
+        <div class="section-head"><h2>Data management</h2></div>
+        <div class="data-actions"><button class="secondary" id="exportBtn2">Export backup (JSON)</button><label class="secondary import-label">Import backup<input type="file" id="importFile" accept="application/json"></label><button class="danger" id="clearData">Clear all workout data</button></div>
+        <p class="fineprint">Your information is stored on this device in this browser. It does not sync to other devices. Export backups regularly, especially before clearing browser data.</p>
+      </section>
+    </main>
+    <footer>BENFIT <span>·</span> CONSISTENCY OVER INTENSITY</footer>
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="tab active" data-tab="home"><b>⌂</b><span>HOME</span></button>
+      <button class="tab" data-tab="workout"><b>＋</b><span>WORKOUT</span></button>
+      <button class="tab" data-tab="history"><b>◷</b><span>HISTORY</span></button>
+      <button class="tab" data-tab="body"><b>◉</b><span>BODY</span></button>
+      <button class="tab" data-tab="reports"><b>▥</b><span>REPORTS</span></button>
+    </nav>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
